@@ -20,9 +20,8 @@ public class StudentControllerTest {
 		@Resource
 		StudentService studentService; 
 		
-		@Resource
-		String name;
 		
+		String name = "小";
 		String name1 = "王小丽";
 		String name2 = "王小丫";
 	
