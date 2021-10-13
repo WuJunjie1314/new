@@ -8,18 +8,14 @@
  */
 package ltd.newbee.mall.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ltd.newbee.mall.entity.Student;
 
 public interface StudentMapper {
-    List<Student> selectByName(String name);
+   
+ArrayList<Student> selectByName(String name);
     
-    // get student id
-    Long getStudentId();
-    // xml mapper ↓
-    // select max(id) + 1 from student
-    
-    int insertStudent(Student s);
    
 }
