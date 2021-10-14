@@ -1,69 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ltd.newbee.mall.dao.StudentMapper">
-    <resultMap id="BaseResultMap" type="ltd.newbee.mall.entity.Student">
-        <id column="student_id" jdbcType="INT" property="studentID"/>
-        <result column="student_name" jdbcType="VARCHAR(45)" property="studentName"/>
-        <result column="student_age" jdbcType="INT" property="studentAge"/>
-        <result column="student_sexual" jdbcType="VARCHAR(45)" property="studentSexual"/>
-        <result column="student_class" jdbcType="VARCHAR(45)" property="studentClass"/>
-        <result column="student_address" jdbcType="VARCHAR(45)" property="studentAddress"/>
-        <result column="student_telephone" jdbcType="VARCHAR(45)" property="studentTelephone"/>
-        <result column="student_score" jdbcType="INTEGER" property="studetScore"/>
-        <result column="student_hometown" jdbcType="VARCHAR(45)" property="studentHometown"/>
-    </resultMap>
+	<resultMap id="BaseResultMap"
+		type="ltd.newbee.mall.entity.Student">
+		<id column="student_id" jdbcType="INT" property="studentID" />
+		<result column="student_name" jdbcType="VARCHAR(45)"
+			property="studentName" />
+		<result column="student_age" jdbcType="INT"
+			property="studentAge" />
+		<result column="student_sexual" jdbcType="VARCHAR(45)"
+			property="studentSexual" />
+		<result column="student_class" jdbcType="VARCHAR(45)"
+			property="studentClass" />
+		<result column="student_address" jdbcType="VARCHAR(45)"
+			property="studentAddress" />
+		<result column="student_telephone" jdbcType="VARCHAR(45)"
+			property="studentTelephone" />
+		<result column="student_score" jdbcType="INT"
+			property="studetScore" />
+		<result column="student_hometown" jdbcType="VARCHAR(45)"
+			property="studentHometown" />
+	</resultMap>
 
+	<select id="selectByName" parameterType="ltd.newbee.mall.dao"
+		resultType="ltd.newbee.mall.entity.Student">
+		SELECT student_name
+		FROM student
+		where student_name like
+		CONCAT ('%',#{studentName},'%')
+	</select>
 
-	<select id="selectByName" parameterType="ltd.newbee.mall.dao" resultType="ltd.newbee.mall.entity.Student">
-	 SELECT student_name
-	FROM student
-		where student_name like CONCAT ('%',#{studentName},'%')
-   </select>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-<select id="getGoodsDesc" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsDescEntity">
-	 SELECT goods_id,
-	    color,
-	    size,
-	    material,
-	    weight,
-	    warranty_year,
-	    set_date,
-	    warp_size
-	FROM goods_desc
-		where goods_id = #{goodsId,jdbcType=BIGINT}
-   </select>
- 
-    <select id="getMaxQaId" parameterType="java.lang.Long" resultType="java.lang.Long">
-	 SELECT max(id) FROM goods_qa where goods_id = #{goodsId,jdbcType=BIGINT}
-   </select>
-   
-   <select id="getGoodsReview" parameterType="java.lang.Long" resultType="ltd.newbee.mall.entity.GoodsReview">
-	 SELECT id,star,customer_id,comment_date,goods_id,title,content,picture
- 		FROM review where goods_id = #{goodsId,jdbcType=BIGINT}
- 		order by star DESC
-   </select>
-   <insert id="insertHelpNum" parameterType="ltd.newbee.mall.entity.GoodsReviewHelpNum">
-        insert into help_num(review_id, user_id) 
-        values(#{reviewId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT})
+	<select id="getMaxStudentID" resultType="java.lang.int">
+		SELECT max(student_id) +
+		1 FROM student
+	</select>
+
+	<insert id="insertStudent"
+		parameterType="ltd.newbee.mall.entity.Student">
+		insert into student
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="studentID != null">
+				student_id,
+			</if>
+			<if test="studentName != null">
+				student_name,
+			</if>
+		</trim>
+		<trim prefix="valus (" suffix=")" suffixOverrides=",">
+			<if test="studentID != null">
+				#{student_id,jdbcType=INT},
+			</if>
+			<if test="studentName != null">
+				#{student_name,jdbcType=VARCHER},
+			</if>
+		</trim>
 	</insert>
-	<update id="updateReviewNum">
-            update review set review_num = review_num + 1
-            where id = #{reviewId} 
-    </update>
-    
-    <select id="getGoodsReviewHelpNum" parameterType="int" resultType="java.lang.Long">
-	 SELECT review_num
- 		FROM review where id = #{reviewId,jdbcType=BIGINT}
-   </select>
+
+	<select id="selectByStudentID"
+		parameterType="ltd.newbee.mall.dao"
+		resultType="ltd.newbee.mall.entity.Student">
+		SELECT student_id
+		FROM student
+		where student_id =
+		#{studentID,jdbcType=INT}
+	</select>
+
+	<update id="updateByStudentIDSelective"
+		parameterType="ltd.newbee.mall.entity.Student">
+		update student
+		<set>
+			<if test="studentName != null">
+				student_name = #{studentName,jdbcType=VARCHAR},
+			</if>
+			<if test="studentAge != null">
+				student_age = #{studentAge,jdbcType=INT},
+			</if>
+			<if test="studentSexual != null">
+				student_sexual = #{studentSexual,jdbcType=VARCHAR},
+			</if>
+			<if test="studentClass != null">
+				student_class = #{studentClass,jdbcType=VARCHAR},
+			</if>
+			<if test="studentAddress != null">
+				student_address = #{studentAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="studentTelephone != null">
+				student_telephone = #{studentTelephone,jdbcType=VARCHAR},
+			</if>
+			<if test="studetScore != null">
+				student_score = #{studetScore,jdbcType=INT},
+			</if>
+			<if test="studentHometown != null">
+				student_hometown = #{studentHometown,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where student_id = #{studentId,jdbcType=INT}
+	</update>
+
+	<delete id="deleteStudentByStudentID"
+		parameterType="java.lang.int">
+		delete FROM student
+		where student_id =
+		#{studentId,jdbcType=INT}
+	</delete>
+
 </mapper>
