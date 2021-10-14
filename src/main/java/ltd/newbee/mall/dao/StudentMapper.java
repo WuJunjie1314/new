@@ -17,5 +17,14 @@ public interface StudentMapper {
    
 ArrayList<Student> selectByName(String name);
     
-   
+int getMaxStudentID();
+
+Student selectByStudentID(int studentID);
+
+int updateByStudentIDSelective(Student s);
+
+int insertStudent(Student s);
+
+boolean deleteStudentByStudentID(int studentID);
+
 }
